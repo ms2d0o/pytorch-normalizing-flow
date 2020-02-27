@@ -1,6 +1,6 @@
 import torch
-from normalizingflow import NormalDistribution2D, TargetDistribution1, TargetDistribution2
-from normalizingflow import NormalizingFlow, calc_loss, get_optimizer
+from .distribution import NormalDistribution2D, TargetDistribution1, TargetDistribution2
+from .normalizing_flow import NormalizingFlow, calc_loss, get_optimizer
 import matplotlib.pyplot as plt
 
 
