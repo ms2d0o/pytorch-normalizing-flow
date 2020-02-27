@@ -1,27 +1,32 @@
 import torch
-from .distribution import NormalDistribution2D, TargetDistribution1, TargetDistribution2
-from .normalizing_flow import NormalizingFlow, calc_loss, get_optimizer
+from src import NormalDistribution2D, TargetDistribution1, TargetDistribution2
+from src import NormalizingFlow, calc_loss, get_optimizer
 import matplotlib.pyplot as plt
 
+N_SAMPLE = 10000
+EPOCHS = 10000
+K_FLOW = 10
+N_DIM = 2
 
 if __name__ == '__main__':
     device = 'cuda:7' if torch.cuda.is_available() else 'cpu'
     normal_distribution = NormalDistribution2D()
+
     # かっこみたいなやつ
-    # target_density = TargetDistribution1()
-    # target_density.plot(fig_name='figures/target_dist_1.png')
+    target_density = TargetDistribution1()
+    target_density.plot(fig_name='figures/target_dist_1.png')
 
-    # sin波っぽいやつ
-    target_density = TargetDistribution2()
-    target_density.plot(fig_name='figures/target_dist_2.png')
+    # sin波
+    # target_density = TargetDistribution2()
+    # target_density.plot(fig_name='figures/target_dist_2.png')
 
-    normalizing_flow = NormalizingFlow(K=15, dim=2)
+    normalizing_flow = NormalizingFlow(K=K_FLOW, dim=N_DIM)
     optimizer = get_optimizer(normalizing_flow.model.parameters())
     invisible_axis = True
 
     losses = []
-    for epoch in range(10000 + 1):
-        z_0_batch = normal_distribution.sample_torch(10000)
+    for epoch in range(EPOCHS + 1):
+        z_0_batch = normal_distribution.sample_torch(N_SAMPLE)
         log_q_0_batch = torch.log(normal_distribution.calc_prob_torch(z_0_batch))
         z_k, log_q_k = normalizing_flow.forward(z_0_batch)
 
