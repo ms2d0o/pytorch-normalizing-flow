@@ -6,7 +6,6 @@ import torch.nn.functional as F
 class PlanarFlow(nn.Module):
     def __init__(self, dim):
         super().__init__()
-        device = 'cuda:7' if torch.cuda.is_available() else 'cpu'
 
         self.w = nn.Parameter(torch.randn(1, dim).normal_(0, 0.1))
         self.b = nn.Parameter(torch.randn(1).normal_(0, 0.1))
