@@ -7,8 +7,11 @@ class PlanarFlow(nn.Module):
     def __init__(self, dim):
         super().__init__()
 
+        # 重み行列にあたるパラメーター
         self.w = nn.Parameter(torch.randn(1, dim).normal_(0, 0.1))
+        # バイアス項
         self.b = nn.Parameter(torch.randn(1).normal_(0, 0.1))
+        # パラメータ
         self.u = nn.Parameter(torch.randn(1, dim).normal_(0, 0.1))
 
     # 順伝播の計算
@@ -52,7 +55,6 @@ class NormalizingFlow(nn.Module):
         self.K = K
         self.dim = dim
         self.planarflow = [PlanarFlow(self.dim) for i in range(self.K)]
-        print(self.planarflow)
         self.model = nn.Sequential(*self.planarflow)
 
     def forward(self, z):
@@ -66,8 +68,7 @@ class NormalizingFlow(nn.Module):
 
 def calc_loss(z_k, log_q_k, target_density):
     log_p = torch.log(target_density.calc_prob_torch(z_k) + 1e-7)
-
-    loss = F.mse_loss(-log_p, log_q_k)
+    loss = F.mse_loss(log_p, -log_q_k)
 
     return loss
 
