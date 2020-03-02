@@ -5,11 +5,10 @@ import matplotlib.pyplot as plt
 
 N_SAMPLE = 10000
 EPOCHS = 10000
-K_FLOW = 10
+K_FLOW = 5
 N_DIM = 2
 
 if __name__ == '__main__':
-    device = 'cuda:7' if torch.cuda.is_available() else 'cpu'
     normal_distribution = NormalDistribution2D()
 
     # かっこみたいなやつ
@@ -27,7 +26,6 @@ if __name__ == '__main__':
     losses = []
     for epoch in range(EPOCHS + 1):
         z_0_batch = normal_distribution.sample_torch(N_SAMPLE)
-        log_q_0_batch = torch.log(normal_distribution.calc_prob_torch(z_0_batch))
         z_k, log_q_k = normalizing_flow.forward(z_0_batch)
 
         optimizer.zero_grad()
