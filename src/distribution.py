@@ -14,10 +14,7 @@ class Distribution:
         shape = z1.shape
         z1 = z1.ravel()
         z2 = z2.ravel()
-        print(f"z1: {z1.shape}")
-        print(f"z2: {z2.shape}")
         z = np.vstack([z1, z2])
-        print(f"z: {z.shape}")
         probability = self.calc_prob(z.T).reshape(shape)
 
         plt.figure(figsize=(6, 6))
